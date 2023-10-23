@@ -1,0 +1,47 @@
+{
+  "name": "sfmc-jb-custom-activity-example",
+  "version": "0.0.1",
+  "main": "app.js",
+  "author": "Salesforce Marketing Cloud",
+  "description": "Journey Builder Custom Activities",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "dev": "concurrently \"set PORT=3000&& nodemon start\" \"webpack --watch\"",
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "start": "node ./app.js",
+    "lint:fix": "eslint --fix modules/**",
+    "prettier": "prettier --write modules/**",
+    "deploy": "gcloud app deploy --quiet && gcloud app logs tail -s default"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "babel-loader": "^9.1.2",
+    "concurrently": "^8.2.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jest": "^27.2.2",
+    "eslint-plugin-unicorn": "^47.0.0",
+    "prettier": "^2.8.8",
+    "webpack": "^5.87.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@google-cloud/secret-manager": "^4.2.2",
+    "@salesforce-ux/design-system": "=2.21.2",
+    "body-parser": "^1.20.2",
+    "eslint": "^8.43.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "nodemon": "^2.0.22",
+    "postmonger": "0.0.16",
+    "serve-static": "^1.15.0"
+  },
+  "engines": {
+    "node": ">=18.16.0"
+  },
+  "type": "module"
+}

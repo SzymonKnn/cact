@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "prettier",
+    "plugin:unicorn/recommended",
+    "eslint:recommended"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "mocha": true
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2022
+  },
+  "globals": {
+    "assert": "readonly"
+  },
+  "rules": {
+    "unicorn/no-null": "off",
+    "unicorn/filename-case": "off"
+  },
+  "ignorePatterns": ["**/*.html", "**/dist/**", "node_modules", "**/images/**"]
+}
