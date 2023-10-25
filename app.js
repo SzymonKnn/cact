@@ -2,6 +2,9 @@ import express from "express";
 import path from "node:path";
 import bodyParser from "body-parser";
 import * as url from "node:url";
+import "dotenv";
+
+
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 //modules

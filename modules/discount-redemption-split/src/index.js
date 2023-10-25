@@ -10,7 +10,6 @@ import Postmonger from "postmonger";
 
 // This contains sample life-cycle events.
 import SampleInteraction from "./sampleInteraction.js";
-
 const connection = new Postmonger.Session();
 let activity = null;
 
@@ -196,6 +195,19 @@ function onCancelButtonClick() {
   // now request that Journey Builder closes the inspector/drawer
   connection.trigger("requestInspectorClose");
 }
+function onDiscountCodeSelectChange() {
+  // enable or disable the done button when the select option changes
+  const select = document.querySelector("#discount-code");
+
+  if (select.selectedIndex) {
+    document.querySelector("#done").removeAttribute("disabled");
+  } else {
+    document.querySelector("#done").setAttribute("disabled", "");
+  }
+
+  // let journey builder know the activity has changes
+  connection.trigger("setActivityDirtyState", true);
+}
 
 /**
  *
@@ -205,6 +217,9 @@ function setupEventHandlers() {
   document
     .querySelector("#cancel")
     .addEventListener("click", onCancelButtonClick);
+  document
+    .querySelector("#discount-code")
+    .addEventListener("change", onDiscountCodeSelectChange);
 }
 
 // this function is for example purposes only. it sets ups a Postmonger

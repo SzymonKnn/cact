@@ -2,9 +2,10 @@ import express from "express";
 import configJSON from "../config/config-json.js";
 
 import { decodeJwt } from "../../common/jwt.js";
+import weather from "../../common/weather.js";
 
 // setup the split example app
-/**
+/** xa
  *
  * @param app
  * @param options
@@ -44,6 +45,28 @@ export default function splitExample(app, options) {
       // Journey Builder looks for config.json when the canvas loads.
       // We'll dynamically generate the config object with a function
       return result.status(200).json(configJSON(request));
+    }
+  );
+
+  app.get(
+    "/modules/discount-redemption-split/test",
+    function (request, result) {
+      // Journey Builder looks for config.json when the canvas loads.
+      // We'll dynamically generate the config object with a function
+      //console.log("TEST");
+      weather.getCityData('Warszawa').then(function(resp){
+        console.log(resp.data[0].lat);
+        console.log(resp.data[0].lon);
+        weather.getCityWeather(resp.data[0].lon, resp.data[0].lat).then(function(weather){
+          console.log(weather.data.current.temp)
+          console.log(weather.data.current.temp > 15 ? "So hot!":"So cold!");
+        }).catch((error)=>{
+          console.log(error);
+        })
+      }).catch((error)=>{
+        console.log(error);
+      })
+      return result.status(200).json();
     }
   );
 
@@ -167,25 +190,39 @@ export default function splitExample(app, options) {
 
       // example: https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/example-rest-activity.htm
       let discountCode = getInArgument("discountCode") || "nothing";
+      let city = getInArgument("City") || "Warsaw";
+      let weatherCode = 0;
+
+      weather.getCityData('Warszawa').then(function(resp){
+        weather.getCityWeather(resp.data[0].lon, resp.data[0].lat).then(function(weather){
+          weatherCode = weather.data.current.temp > 15 ? 1 : 0;
+        }).catch((error)=>{
+          console.log(error);
+        })
+      }).catch((error)=>{
+        console.log(error);
+      })
 
       console.log("discount code:", discountCode);
+      console.log("city:", city);
 
       if (discountCode && discountCode.length > 0) {
-        switch (discountCode[0]) {
-          case "A": {
-            console.log("");
+        switch (weatherCode) {
+          case 0: {
+            console.log("So cold!");
             return result.status(200).json({ branchResult: "no_activity" });
           }
-          case "B": {
+          case 1: {
+            console.log("So hot!");
             return result.status(200).json({ branchResult: "viewed_item" });
           }
-          case "C": {
+          case 2: {
             return result.status(200).json({ branchResult: "abandoned_cart" });
           }
-          case "D": {
+          case 3: {
             return result.status(200).json({ branchResult: "purchased_item" });
           }
-          case "E":
+          case 4:
           default: {
             return result.status(200).json({ branchResult: "invalid_code" });
           }
